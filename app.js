@@ -3,7 +3,7 @@
 
 //1.- declarar variables 
 let amigos = [];
-
+let sorteados = [];
 
 //2.- Creamos funciones, se necesita agregar amigos, mostrar los nombres y sortear el nombre
 
@@ -36,6 +36,37 @@ function asignarTextoElemento (elemento,texto){
     });
 }
 
-// 2.3.- Sorteamos amigo secreto (pendiente Martes 21 de enero 2025)
+// 2.3.- Sorteamos amigo secreto 
 
-//Esta funcion va a asignar los cambios de texto
+function sortearAmigo(){
+    // Si no tenemos amigos, alertamos que no tenemos amigos a sortear
+    if (amigos.length === 0){
+        alert('No hay amigos para sortear');
+        return;
+    }
+    // comparamos para cuando ya hayamos tenido a todos los sorteados indicar que ya fueron sorteados todos.
+    if (sorteados.length === amigos.length){
+        alert('Todos los amigos ya han sido sorteados');
+        return;
+    }
+    // inicializamos el amigo sorteado vacio como buena practica
+    let amigoSorteado = '';
+    // y comparamos con el operador === entendiendo que son del mismo tipo de variable ya que en js no se declara el tipo de variable
+    do {
+        /* creamos una variable para almacenar al amigo donde tomamos la funcion random matematica para cualquier iteración de la
+        matriz "amigos", sin importar el tipo de matriz siempre podremos utilizar math ya que las posiciones de almacenamiento son
+        numericas, entonces se pueden realizar operaciones matematicas*/
+        let indice = Math.floor(Math.random() * amigos.length);
+        //ahora asignamos esa operación a la variable inicializada antes vacia!
+        amigoSorteado = amigos[indice];
+        //ahora el bucle do-while se asegura de que el amigo no haya sido sorteado previamente  
+    } while (sorteados.includes(amigoSorteado));
+
+    //por ultimo añade el amigo sorteado a la matriz de los que ya han sido sorteados y actualiza esa lista en el html.
+    sorteados.push(amigoSorteado);
+    let resultadoHTML = document.querySelector('#resultado');
+    let li = document.createElement('li');
+    li.textContent = amigoSorteado;
+    resultadoHTML.appendChild(li);
+
+}
