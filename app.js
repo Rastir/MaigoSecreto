@@ -11,7 +11,8 @@ let sorteados = [];
 function agregarAmigo(){
     //Esta funcion necesita primero obtener el resultado de donde se está ingresando, en esta caso del recuadro de (amigo)
     let valorAmigo = document.getElementById('amigo');
-    let amigo = valorAmigo.value;
+    //segun la documentación el metodo trim() sirve para limpiar espacios en blanco y darle formato, pero no se si sea la manera correcta
+    let amigo = valorAmigo.value.trim();
     //creamos un "sout" para verificar que se está capturando el click y nombre y todo 
     console.log(amigo); 
     //agregamos el valor obtenido al array "Amigos"
@@ -19,21 +20,28 @@ function agregarAmigo(){
         amigos.push(amigo);
         console.log(amigos);
         valorAmigo.value = '';
-        asignarTextoElemento('#listaAmigos',amigos);
+        actualizarListaAmigos();
+    } else {
+        alert('No se pueden agregar nombre en blanco');
     }
 }
 
 // 2.2.- Mostramos los nombres en el html 
 
-//Esta funcion va a hacer que se cambien el texto de la pagina
-function asignarTextoElemento (elemento,texto){
-    let elementoHTML = document.querySelector(elemento);
-    elementoHTML.innerHTML = '';
-    texto.forEach(texto => {
+function actualizarListaAmigos(){
+    // obtenemos el elemento HTML de donde se va a enseñar la lista de los amigos
+    let listaAmigos = document.getElementById('listaAmigos');
+    listaAmigos.innerHTML = '';
+
+    //recorremos la matriz y creamos un elemento "<li>" de acuerdo a las instrucciones
+    for(let i = 0; i < amigos.length; i++){
         let li = document.createElement('li');
-        li.textContent = texto;
-        elementoHTML.appendChild(li);
-    });
+        li.textContent = amigos[i];
+        /* aqui tuve que investigar como añadir el "li" que se crea y la documentación dice que el nodo appendChild inserta un nuevo nodo dentro
+         de la estructura DOM y es la segunda parte del proceso central uno-dos, osea crear y añadir para construir paginas we a base de programación.
+         En resumen agreha un nodo al final de la lista de un elemto hijo de su "clase" padre. osea muestra un elemento*/
+         listaAmigos.appendChild(li);
+    }
 }
 
 // 2.3.- Sorteamos amigo secreto 
@@ -51,22 +59,39 @@ function sortearAmigo(){
     }
     // inicializamos el amigo sorteado vacio como buena practica
     let amigoSorteado = '';
-    // y comparamos con el operador === entendiendo que son del mismo tipo de variable ya que en js no se declara el tipo de variable
-    do {
-        /* creamos una variable para almacenar al amigo donde tomamos la funcion random matematica para cualquier iteración de la
-        matriz "amigos", sin importar el tipo de matriz siempre podremos utilizar math ya que las posiciones de almacenamiento son
-        numericas, entonces se pueden realizar operaciones matematicas*/
+    // seleccionamos un amigo aleatorio que no haya sido sorteado antes
+    while (true){
         let indice = Math.floor(Math.random() * amigos.length);
-        //ahora asignamos esa operación a la variable inicializada antes vacia!
         amigoSorteado = amigos[indice];
-        //ahora el bucle do-while se asegura de que el amigo no haya sido sorteado previamente  
-    } while (sorteados.includes(amigoSorteado));
-
+        // agregamos la condición de salida, si no ha sido sorteado, se rompe el bucle
+        if(!sorteados.includes(amigoSorteado)){
+            break;
+        }
+    }
+    
     //por ultimo añade el amigo sorteado a la matriz de los que ya han sido sorteados y actualiza esa lista en el html.
     sorteados.push(amigoSorteado);
     let resultadoHTML = document.querySelector('#resultado');
     let li = document.createElement('li');
     li.textContent = amigoSorteado;
     resultadoHTML.appendChild(li);
+}
 
+/* Como extra correjimos agregamos un boton nuevo en el html para darle la posibilidad de iniciar un sorteo nuevo
+    esto se hace copiando y pegando la clase boton del html y cambiando el nombre a button-reiniciar una vez hecho esto
+    se agrega una variable en el css y se juegan con los valores para dejar de redondear el boton para que así se ve más
+    fluido y tenga lindo diseño o que no se vea chueco a esto tambien tenemos que añadir la funcionalidad que vimos en 
+    el curso pasado de valores iniciales y con eso empezamos de nuevo y ya !*/
+
+function reiniciarJuego(){
+
+    //regresamos las matrices a valor zero
+    amigos = [];
+    sorteados = [];
+     //limpiamos la caja donde se ingeesan los nombre en caso de que haya algo
+     document.getElementById('amigo').value = '';
+     //borramos los listados que se muestran en pantalla y el sorteo
+     document.getElementById('listaAmigos').innerHTML = '';
+     document.getElementById('resultado').innerHTML = '';
+     alert('Iniciando nuevo sorteo');
 }
