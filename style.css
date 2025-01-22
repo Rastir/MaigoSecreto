@@ -115,6 +115,12 @@ button {
     cursor: pointer;
 }
 
+.button-reiniciar {
+    background-color: var(--color-tertiary);
+    color: var(--color-text);
+    border-radius: 0 0px 0px 0;
+}
+
 .button-add {
     background-color: var(--color-tertiary);
     color: var(--color-text);
