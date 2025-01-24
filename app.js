@@ -9,19 +9,25 @@ let sorteados = [];
 
 // 2.1.- Agregar amigos
 function agregarAmigo() {
-    //Esta funcion necesita primero obtener el resultado de donde se está ingresando, en esta caso del recuadro de (amigo)
     let valorAmigo = document.getElementById('amigo');
-    //segun la documentación el metodo trim() sirve para limpiar espacios en blanco y darle formato, pero no se si sea la manera correcta
     let amigo = valorAmigo.value.trim();
-    //agregamos el valor obtenido al array "Amigos" donde cada que se agrege un nombre lo añade al vector de amigos
-    if (amigo) {
-        amigos.push(amigo);
-        valorAmigo.value = '';
-        actualizarListaAmigos();
-    } else {
-        //de lo contrario en caso de que esté en blanco o sean puros espacios arrojar error
-        alert('No se pueden agregar nombre en blanco');
+
+    // revisar si el campo está vacio
+    if (!amigo) {
+        alert('No se pueden agregar nombres en blanco');
+        return;
     }
+
+    // revisar si el nombre ya se encuentra registrado
+    if (amigos.includes(amigo)) {
+        alert('Este amigo ya está en la lista');
+        return;
+    }
+
+    // Add the friend to the list
+    amigos.push(amigo);
+    valorAmigo.value = '';
+    actualizarListaAmigos();
 }
 
 // 2.2.- Mostramos los nombres en el html 
